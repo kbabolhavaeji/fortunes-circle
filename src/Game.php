@@ -9,14 +9,25 @@ class Game implements GameInterface
 {
 
     const USER_TRIES_NUMBER = 7;
+
     private $theWord;
     private $userGuesses = [];
+    private $gameEndFlag = false;
+
+    public function __construct()
+    {
+        $this->pickUpAWord();
+    }
 
     /**
-     * @return mixed
+     * @return View|void
      */
     public function getACharacter($item)
     {
+        if (count($this->userGuesses) > self::USER_TRIES_NUMBER) {
+            return new View(new MessagesHandler('you lose !'));
+        }
+
         $this->userGuesses[] = $item;
     }
 
@@ -25,35 +36,34 @@ class Game implements GameInterface
      */
     public function checkTheCharacter()
     {
-        // TODO: Implement checkTheCharacter() method.
+        $checker = (new CheckItem(end($this->userGuesses), $this->theWord))->check();
+        return new View(new MessagesHandler($checker->message));
+    }
+
+    /**
+     * App choose a word at the start point
+     *
+     * @return void
+     */
+    public function pickUpAWord($index = null)
+    {
+        $picked = $index == null ?: rand(1, 10);
+        $this->theWord = Helpers::pickUpWordRandomly($picked);
     }
 
     /**
      * @return mixed
      */
-    public function pickUpAWord()
-    {
-        $this->theWord = Helpers::pickUpWordRandomly(rand(1, 10));
-    }
-
-    /**
-     * @return mixed
-     */
-    public function showMessage()
-    {
-        // TODO: Implement showMessage() method.
-    }
-
-    /**
-     * @return mixed
-     */
-    public function stateOfGuess()
-    {
-        // TODO: Implement stateOfGuess() method.
-    }
-
     public function returnTheWord()
     {
         return $this->theWord;
+    }
+
+    /**
+     * @return array
+     */
+    public function returnUserGuesses()
+    {
+        return $this->userGuesses;
     }
 }

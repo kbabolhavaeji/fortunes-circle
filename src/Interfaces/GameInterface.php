@@ -8,9 +8,5 @@ interface GameInterface
 
     public function checkTheCharacter();
 
-    public function stateOfGuess();
-
-    public function pickUpAWord();
-
-    public function showMessage();
+    public function pickUpAWord($index = null);
 }

@@ -39,4 +39,15 @@ class Helpers
         return $list[$number-1];
     }
 
+    /**
+     * User guesses
+     *
+     * @param $guesses
+     * @return int
+     */
+    public static function countUserGuesses($guesses)
+    {
+        return count($guesses);
+    }
+
 }

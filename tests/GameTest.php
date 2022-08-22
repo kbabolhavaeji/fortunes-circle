@@ -14,7 +14,7 @@ class GameTest extends TestCase
      *
      * @return void
      */
-    public function test_list_of_words_exist()
+    public function test_list_of_words_exists()
     {
         $list = Helpers\Helpers::listOfWords();
         $this->assertIsArray($list);
@@ -25,7 +25,7 @@ class GameTest extends TestCase
      *
      * @return void
      */
-    public function test_pick_up_word_randomly_helper()
+    public function test_pick_up_word_randomly_helper_works_correctly()
     {
         $word = Helpers\Helpers::pickUpWordRandomly(rand(1, 10));
         $this->assertIsString($word);
@@ -43,11 +43,48 @@ class GameTest extends TestCase
         $this->assertIsString($game->returnTheWord());
     }
 
-    public function test_user_can_send_character()
+    /**
+     * User can send a character
+     *
+     * @return void
+     */
+    public function test_user_can_guess_a_character()
     {
         $game = new Game();
         $game->getACharacter('a');
 
-        //$this->
+        $this->assertContains('a', $game->returnUserGuesses());
     }
+
+    /**
+     * Check user guesses count
+     *
+     * @return void
+     */
+    public function test_user_can_not_have_more_than_seven_guesses()
+    {
+        $game = new Game();
+        $list = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'I'];
+
+        for($i = 0; $i < Game::USER_TRIES_NUMBER; $i++){
+            $game->getACharacter($list[$i]);
+        }
+
+        $this->assertCount(Game::USER_TRIES_NUMBER, $game->returnUserGuesses());
+    }
+
+    /**
+     * Correct guess
+     *
+     * @return void
+     */
+    public function test_if_user_guess_a_character_correctly()
+    {
+        $game = new Game();
+        $userGuess = 'a';
+
+        $game->pickUpAWord(0);
+        $this->assertStringContainsString($userGuess, $game->returnTheWord());
+    }
+
 }

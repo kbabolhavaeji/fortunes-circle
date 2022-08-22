@@ -15,7 +15,13 @@
         "files": []
     },
     "require": {
+        "php": "^7.4",
         "ext-json": "*",
         "phpunit/phpunit": "9.5.x-dev"
+    },
+    "scripts": {
+        "post-root-package-install": [
+            "./vendor/bin/phpunit tests/GameTest.php"
+        ]
     }
 }
