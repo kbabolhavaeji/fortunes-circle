@@ -1,0 +1,21 @@
+{
+    "name": "kiumars-babolhavaeji/ciecle-fortunes",
+    "description": "simple implementation of circle-fortunes game",
+    "authors": [
+        {
+            "name": "Kiumars Babolhavaeji",
+            "email": "k.babolhavaeji@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "CircleFortunes\\": "src"
+        },
+        "files": []
+    },
+    "require": {
+        "ext-json": "*",
+        "phpunit/phpunit": "9.5.x-dev"
+    }
+}
