@@ -12,7 +12,7 @@ class Game implements GameInterface
 
     private $theWord;
     private $userGuesses = [];
-    private $gameEndFlag = false;
+    public $gameEndFlag = false;
 
     public function __construct()
     {
@@ -22,13 +22,26 @@ class Game implements GameInterface
     /**
      * @return View|void
      */
+    public function checkTheGame()
+    {
+        if($this->gameEndFlag){
+            return (new View(new MessagesHandler('game is over')))->show();
+        }
+    }
+
+    /**
+     * @return View|void
+     */
     public function getACharacter($item)
     {
-        if (count($this->userGuesses) > self::USER_TRIES_NUMBER) {
-            return new View(new MessagesHandler('you lose !'));
-        }
+        $this->checkTheGame();
 
-        $this->userGuesses[] = $item;
+        if (count($this->userGuesses) >= self::USER_TRIES_NUMBER) {
+            $this->gameEndFlag = true;
+            return (new View(new MessagesHandler('you lose')))->show();
+        } else {
+            $this->userGuesses[] = $item;
+        }
     }
 
     /**
@@ -36,8 +49,11 @@ class Game implements GameInterface
      */
     public function checkTheCharacter()
     {
-        $checker = (new CheckItem(end($this->userGuesses), $this->theWord))->check();
-        return new View(new MessagesHandler($checker->message));
+        $checker = (new CheckItem(end($this->userGuesses), $this->theWord, $this->userGuesses))->check();
+        if($checker->gameState){
+            $this->gameEndFlag = true;
+        }
+        return (new View(new MessagesHandler($checker->message)))->show();
     }
 
     /**
